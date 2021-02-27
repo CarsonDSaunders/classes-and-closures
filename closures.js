@@ -22,13 +22,13 @@ function outer() {
   Invoke outer saving the return value into another variable called 'inner'.
 */
   
-// Code Here
+const inner = outer()
 
 
 
 //Once you do that, invoke inner.
 
-//Code Here
+inner()
 
 
 
@@ -51,7 +51,8 @@ function callFriend(name) {
   (HINT: You will need to pass in arguments to both function invocations)
 */
 
-//Code Here
+let callJake = callFriend('Jake');
+callJake('435-555-9248')
 
 
 
@@ -61,16 +62,22 @@ function callFriend(name) {
   Write a function called makeCounter that makes the following code work properly.
 */
 
-//Code Here
+function makeCounter() {
+  let counter = 0;
+  return function() {
+    counter += 1;
+    return counter;
+  }
+}
 
 
 
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  // var count = makeCounter();
+  // count(); // 1
+  // count(); // 2
+  // count(); // 3
+  // count(); // 4
 
 
 
@@ -86,10 +93,17 @@ function callFriend(name) {
 */
 
 function counterFactory(value) {
-  // Code here.
+  let num = value;
 
   return {
-
+    inc:function() {
+      num += 1;
+      return num;
+    },
+    dec:function() {
+      num -= 1;
+      return num;
+    }
   };
 }
 
@@ -112,10 +126,12 @@ counter = counterFactory(10);
 function motivation( firstname, lastname ) {
   var welcomeText = "You're doing awesome, keep it up";
 
-  // code message function here.
+  function message() {
+    return `You're doing awesome, keep it up ${firstname} ${lastname}.`
+  }
 
   //Uncommment this to return the value of your message function
-  //return message;
+return message;
 }
 
 var greeting = motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
@@ -139,15 +155,17 @@ var module = (function() {
   function privateMethod(){
     return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
   }
-
+  
   // Anything that is being returned is made public and can be invoked from
   // outside our lexical scope
   return {
-    // Code here.
+    publicMethod:function() {
+      return privateMethod();
+    }
   };
 })();
 
-
+module.publicMethod();
 
 ////////// PROBLEM 7 //////////
 
@@ -162,7 +180,15 @@ function secretNumber() {
   var secret = 143;
 
   return {
-    // Code here
+    addToSecret:function(addedVal) {
+      secret += addedVal;
+      return secret;
+    },
+
+    takeAwayFromSecret:function(takenValue) {
+      secret -= takenValue;
+      return secret;
+    }
   };
 }
 
@@ -180,7 +206,8 @@ function secretNumber() {
     4 seconds after call - log 4
     5 seconds after call - log 5
 
-  However, because each call to console.log occurs after the loop has finished, the value of i has changed before the console.log executes.
+  However, because each call to console.log occurs after the loop has finished,
+  the value of i has changed before the console.log executes.
   We'll need to use a closure to preserve a reference to i at the time of execution.
   
   Fix the code below to log the desired output.
@@ -188,9 +215,12 @@ function secretNumber() {
 
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-      console.log(i);
-    }, i * 1000);
+    function counter(inc) {
+      setTimeout(function () {
+        console.log(inc);
+      }, i * 1000);
+    }
+    counter(i);
   }
 }
 timeOutCounter();
